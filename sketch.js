@@ -4,12 +4,14 @@ const Bodies = Matter.Bodies;
 const Constraint = Matter.Constraint;
 
 var engine, world;
-var player,ground,mountains,playerimage,zombie;
+var player,ground,mountains,playerimage,zombie,sword,swordImg;
 var canvas;
+var rand = Math.round(random(1,2));
 
 function preload() {
-  playerimage = loadImage("my player.png")
-  mountains = loadImage("my background.jpg")
+  playerimage = loadImage("my player.png");
+  mountains = loadImage("my background.jpg");
+  swordImg = loadImage("netherite sword.png");
 }
 
 function setup(){
@@ -21,7 +23,14 @@ ground = new Ground(900,620,2000,10);
     isStatic: true
   });
   World.add(world,player);
-  zombie = new zombies(300,300);
+  if(rand === 1){
+    zombie = new zombies(300,300,100,200);
+  }else if(rand === 2){
+  zombie = new zombies(300,300,200,400);
+}
+  sword = createSprite(player.position.x+120,player.position.y-20,250,200);
+  sword.addImage("sword",swordImg);
+  sword.scale = 8;
 }
 
 function draw(){
@@ -39,7 +48,10 @@ function draw(){
       ground.body.position.x = 900;
     }
     creepers();
+    if(rand === 1 || rand === 2){
     zombie.display();
+  }
+    drawSprites();
 }
 
 function creepers(){
